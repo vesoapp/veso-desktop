@@ -1,5 +1,5 @@
 const {BrowserWindow, app} = require("electron");
-
+require('v8-compile-cache');
 
 app.on("ready", () => {
   const win = new BrowserWindow({
