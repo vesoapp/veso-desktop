@@ -405,10 +405,10 @@ import ServerConnections from '../ServerConnections';
 
             let limit;
             if (enableScrollX()) {
-                limit = 12;
+                limit = 24;
             } else {
                 limit = screenWidth >= 1920 ? 8 : (screenWidth >= 1600 ? 8 : (screenWidth >= 1200 ? 9 : 6));
-                limit = Math.min(limit, 5);
+                limit = Math.min(limit, 10);
             }
 
             const options = {
