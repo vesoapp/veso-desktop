@@ -1,20 +1,20 @@
-import { SyncPlayUserAccessType, UserDto } from '@thornbill/jellyfin-sdk/dist/generated-client';
+import type { SyncPlayUserAccessType, UserDto } from '@thornbill/jellyfin-sdk/dist/generated-client';
 import React, { FunctionComponent, useCallback, useEffect, useState, useRef } from 'react';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import globalize from '../../scripts/globalize';
 import LibraryMenu from '../../scripts/libraryMenu';
+import { appRouter } from '../appRouter';
 import ButtonElement from '../dashboard/users/ButtonElement';
 import CheckBoxElement from '../dashboard/users/CheckBoxElement';
 import CheckBoxListItem from '../dashboard/users/CheckBoxListItem';
 import InputElement from '../dashboard/users/InputElement';
 import LinkEditUserPreferences from '../dashboard/users/LinkEditUserPreferences';
-import SectionTitleContainer from '../dashboard/users/SectionTitleContainer';
+import SectionTitleLinkElement from '../dashboard/users/SectionTitleLinkElement';
 import SelectElement from '../dashboard/users/SelectElement';
 import SelectSyncPlayAccessElement from '../dashboard/users/SelectSyncPlayAccessElement';
 import SectionTabs from '../dashboard/users/SectionTabs';
 import loading from '../loading/loading';
 import toast from '../toast/toast';
-import { getParameterByName } from '../../utils/url';
 
 type ItemsArr = {
     Name?: string;
@@ -40,7 +40,7 @@ const UserEditPage: FunctionComponent = () => {
     };
 
     const getUser = () => {
-        const userId = getParameterByName('userId');
+        const userId = appRouter.param('userId');
         return window.ApiClient.getUser(userId);
     };
 
@@ -263,7 +263,7 @@ const UserEditPage: FunctionComponent = () => {
             }
         });
 
-        window.ApiClient.getServerConfiguration().then(function (config) {
+        window.ApiClient.getNamedConfiguration('network').then(function (config) {
             const fldRemoteAccess = page.querySelector('.fldRemoteAccess') as HTMLDivElement;
             config.EnableRemoteAccess ? fldRemoteAccess.classList.remove('hide') : fldRemoteAccess.classList.add('hide');
         });
@@ -278,10 +278,18 @@ const UserEditPage: FunctionComponent = () => {
     return (
         <div ref={element}>
             <div className='content-primary'>
-                <SectionTitleContainer
-                    title={userName}
-                    titleLink='https://docs.jellyfin.org/general/server/users/'
-                />
+                <div className='verticalSection'>
+                    <div className='sectionTitleContainer flex align-items-center'>
+                        <h2 className='sectionTitle username'>
+                            {userName}
+                        </h2>
+                        <SectionTitleLinkElement
+                            className='raised button-alt headerHelpButton'
+                            title='Help'
+                            url='https://docs.jellyfin.org/general/server/users/'
+                        />
+                    </div>
+                </div>
                 <SectionTabs activeTab='useredit'/>
                 <div
                     className='lnkEditUserPreferencesContainer'

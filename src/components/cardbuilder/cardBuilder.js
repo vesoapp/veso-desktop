@@ -22,7 +22,6 @@ import './card.scss';
 import '../../elements/emby-button/paper-icon-button-light';
 import '../guide/programs.scss';
 import ServerConnections from '../ServerConnections';
-import { appRouter } from '../appRouter';
 
         const enableFocusTransform = !browser.slow && !browser.edge;
 
@@ -657,12 +656,12 @@ import { appRouter } from '../appRouter';
 
             if (str) {
                 const charIndex = Math.floor(str.length / 2);
-                const character = String(str.slice(charIndex, charIndex + 1).charCodeAt());
+                const character = String(str.substr(charIndex, 1).charCodeAt());
                 let sum = 0;
                 for (let i = 0; i < character.length; i++) {
                     sum += parseInt(character.charAt(i));
                 }
-                const index = String(sum).slice(-1);
+                const index = String(sum).substr(-1);
 
                 return (index % numRandomColors) + 1;
             } else {
@@ -821,7 +820,7 @@ import { appRouter } from '../appRouter';
                         if (isUsingLiveTvNaming(item)) {
                             lines.push(escapeHtml(item.Name));
 
-                            if (!item.EpisodeTitle) {
+                            if (!item.EpisodeTitle && !item.IndexNumber) {
                                 titleAdded = true;
                             }
                         } else {
@@ -1039,10 +1038,9 @@ import { appRouter } from '../appRouter';
                 return text;
             }
 
-            const url = appRouter.getRouteUrl(item);
-            let html = '<a href="' + url + '" ' + itemShortcuts.getShortcutAttributesHtml(item, serverId) + ' class="itemAction textActionButton" title="' + text + '" data-action="link">';
+            let html = '<button ' + itemShortcuts.getShortcutAttributesHtml(item, serverId) + ' type="button" class="itemAction textActionButton" title="' + text + '" data-action="link">';
             html += text;
-            html += '</a>';
+            html += '</button>';
 
             return html;
         }
@@ -1349,13 +1347,12 @@ import { appRouter } from '../appRouter';
 
                 cardImageContainerClose = '</div>';
             } else {
-                const cardImageContainerAriaLabelAttribute = ` aria-label="${item.Name}"`;
+                const cardImageContainerAriaLabelAttribute = ` aria-label="${escapeHtml(item.Name)}"`;
 
-                const url = appRouter.getRouteUrl(item);
                 // Don't use the IMG tag with safari because it puts a white border around it
-                cardImageContainerOpen = imgUrl ? ('<a href="' + url + '" data-action="' + action + '" class="' + cardImageContainerClass + ' ' + cardContentClass + ' itemAction lazy" data-src="' + imgUrl + '" ' + blurhashAttrib + cardImageContainerAriaLabelAttribute + '>') : ('<a href="' + url + '" data-action="' + action + '" class="' + cardImageContainerClass + ' ' + cardContentClass + ' itemAction"' + cardImageContainerAriaLabelAttribute + '>');
+                cardImageContainerOpen = imgUrl ? ('<button data-action="' + action + '" class="' + cardImageContainerClass + ' ' + cardContentClass + ' itemAction lazy" data-src="' + imgUrl + '" ' + blurhashAttrib + cardImageContainerAriaLabelAttribute + '>') : ('<button data-action="' + action + '" class="' + cardImageContainerClass + ' ' + cardContentClass + ' itemAction"' + cardImageContainerAriaLabelAttribute + '>');
 
-                cardImageContainerClose = '</a>';
+                cardImageContainerClose = '</button>';
             }
 
             const cardScalableClass = 'cardScalable';
@@ -1433,7 +1430,7 @@ import { appRouter } from '../appRouter';
             if (tagName === 'button') {
                 className += ' itemAction';
                 actionAttribute = ' data-action="' + action + '"';
-                ariaLabelAttribute = ` aria-label="${item.Name}"`;
+                ariaLabelAttribute = ` aria-label="${escapeHtml(item.Name)}"`;
             } else {
                 actionAttribute = '';
             }
@@ -1473,8 +1470,6 @@ import { appRouter } from '../appRouter';
             let html = '';
 
             html += '<div class="cardOverlayContainer itemAction" data-action="' + action + '">';
-            const url = appRouter.getRouteUrl(item);
-            html += '<a href="' + url + '" class="cardImageContainer"></a>';
 
             const btnCssClass = 'cardOverlayButton cardOverlayButton-hover itemAction paper-icon-button-light';
 

@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { appRouter } from '../appRouter';
+import SectionTitleLinkElement from '../dashboard/users/SectionTitleLinkElement';
 import SectionTabs from '../dashboard/users/SectionTabs';
 import UserPasswordForm from '../dashboard/users/UserPasswordForm';
-import { getParameterByName } from '../../utils/url';
-import SectionTitleContainer from '../dashboard/users/SectionTitleContainer';
 
 const UserPasswordPage: FunctionComponent = () => {
-    const userId = getParameterByName('userId');
+    const userId = appRouter.param('userId');
     const [ userName, setUserName ] = useState('');
 
     const loadUser = useCallback(() => {
@@ -23,10 +23,18 @@ const UserPasswordPage: FunctionComponent = () => {
     return (
         <div>
             <div className='content-primary'>
-                <SectionTitleContainer
-                    title={userName}
-                    titleLink='https://docs.jellyfin.org/general/server/users/'
-                />
+                <div className='verticalSection'>
+                    <div className='sectionTitleContainer flex align-items-center'>
+                        <h2 className='sectionTitle username'>
+                            {userName}
+                        </h2>
+                        <SectionTitleLinkElement
+                            className='raised button-alt headerHelpButton'
+                            title='Help'
+                            url='https://docs.jellyfin.org/general/server/users/'
+                        />
+                    </div>
+                </div>
                 <SectionTabs activeTab='userpassword'/>
                 <div className='readOnlyContent'>
                     <UserPasswordForm

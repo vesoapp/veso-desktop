@@ -13,7 +13,7 @@ import globalize from '../../scripts/globalize';
 import '../../assets/css/scrollstyles.scss';
 import '../../elements/emby-itemscontainer/emby-itemscontainer';
 import '../../elements/emby-button/emby-button';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import autoFocuser from '../../components/autoFocuser';
 
 /* eslint-disable indent */
@@ -98,7 +98,7 @@ import autoFocuser from '../../components/autoFocuser';
             SortOrder: 'Descending',
             IncludeItemTypes: 'Episode',
             Filters: 'IsResumable',
-            Limit: screenWidth >= 1600 ? 5 : 3,
+            Limit: screenWidth >= 1920 ? 5 : screenWidth >= 1600 ? 5 : 3,
             Recursive: true,
             Fields: 'PrimaryImageAspectRatio,MediaSourceCount,BasicSyncInfo',
             CollapseBoxSetItems: false,

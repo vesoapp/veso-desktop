@@ -6,7 +6,7 @@ import '../../elements/emby-textarea/emby-textarea';
 import '../../elements/emby-input/emby-input';
 import '../../elements/emby-select/emby-select';
 import '../../elements/emby-button/emby-button';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import alert from '../../components/alert';
 
 /* eslint-disable indent */
@@ -15,7 +15,6 @@ import alert from '../../components/alert';
         page.querySelector('#txtServerName').value = systemInfo.ServerName;
         page.querySelector('#txtCachePath').value = systemInfo.CachePath || '';
         page.querySelector('#chkQuickConnectAvailable').checked = config.QuickConnectAvailable === true;
-        page.querySelector('#chkSplashScreenAvailable').checked = config.SplashscreenEnabled === true;
         $('#txtMetadataPath', page).val(systemInfo.InternalMetadataPath || '');
         $('#txtMetadataNetworkPath', page).val(systemInfo.MetadataNetworkPath || '');
         $('#selectLocalizationLanguage', page).html(languageOptions.map(function (language) {
@@ -108,6 +107,7 @@ import alert from '../../components/alert';
             ApiClient.getNamedConfiguration(brandingConfigKey).then(function (config) {
                 view.querySelector('#txtLoginDisclaimer').value = config.LoginDisclaimer || '';
                 view.querySelector('#txtCustomCss').value = config.CustomCss || '';
+                view.querySelector('#chkSplashScreenAvailable').checked = config.SplashscreenEnabled === true;
             });
         });
     }

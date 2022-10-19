@@ -2,7 +2,7 @@ import 'jquery';
 import loading from '../../components/loading/loading';
 import libraryMenu from '../../scripts/libraryMenu';
 import globalize from '../../scripts/globalize';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 
 /* eslint-disable indent */
 
@@ -12,6 +12,8 @@ import Dashboard from '../../utils/dashboard';
         $('#txtMinAudiobookResume', page).val(config.MinAudiobookResume);
         $('#txtMaxAudiobookResume', page).val(config.MaxAudiobookResume);
         $('#txtMinResumeDuration', page).val(config.MinResumeDurationSeconds);
+        page.querySelector('#chkMarkResumableItemUnplayedOnPlay').checked = config.MarkResumableItemUnplayedOnPlay || false;
+        page.querySelector('#chkUpdateLastPlayedAndPlayCountOnPlayCompletion').checked = config.UpdateLastPlayedAndPlayCountOnPlayCompletion || false;
         loading.hide();
     }
 
@@ -24,6 +26,8 @@ import Dashboard from '../../utils/dashboard';
             config.MinAudiobookResume = $('#txtMinAudiobookResume', form).val();
             config.MaxAudiobookResume = $('#txtMaxAudiobookResume', form).val();
             config.MinResumeDurationSeconds = $('#txtMinResumeDuration', form).val();
+            config.MarkResumableItemUnplayedOnPlay = form.querySelector('#chkMarkResumableItemUnplayedOnPlay').checked;
+            config.UpdateLastPlayedAndPlayCountOnPlayCompletion = form.querySelector('#chkUpdateLastPlayedAndPlayCountOnPlayCompletion').checked;
 
             ApiClient.updateServerConfiguration(config).then(Dashboard.processServerConfigurationUpdateResult);
         });
@@ -33,13 +37,13 @@ import Dashboard from '../../utils/dashboard';
 
     function getTabs() {
         return [{
-            href: '#/encodingsettings.html',
+            href: '#!/encodingsettings.html',
             name: globalize.translate('Transcoding')
         }, {
-            href: '#/playbackconfiguration.html',
+            href: '#!/playbackconfiguration.html',
             name: globalize.translate('ButtonResume')
         }, {
-            href: '#/streamingsettings.html',
+            href: '#!/streamingsettings.html',
             name: globalize.translate('TabStreaming')
         }];
     }

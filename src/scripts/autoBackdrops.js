@@ -1,7 +1,7 @@
-import { clearBackdrop, setBackdrops } from '../components/backdrop/backdrop';
+import backdrop from '../components/backdrop/backdrop';
 import * as userSettings from './settings/userSettings';
 import libraryMenu from './libraryMenu';
-import { pageClassOn } from '../utils/dashboard';
+import { pageClassOn } from './clientUtils';
 
 const cache = {};
 
@@ -48,12 +48,12 @@ function showBackdrop(type, parentId) {
     if (apiClient) {
         getBackdropItemIds(apiClient, apiClient.getCurrentUserId(), type, parentId).then(function (images) {
             if (images.length) {
-                setBackdrops(images.map(function (i) {
+                backdrop.setBackdrops(images.map(function (i) {
                     i.BackdropImageTags = [i.tag];
                     return i;
                 }));
             } else {
-                clearBackdrop();
+                backdrop.clearBackdrop();
             }
         });
     }
@@ -70,10 +70,10 @@ pageClassOn('pageshow', 'page', function () {
                 showBackdrop(type, parentId);
             } else {
                 page.classList.remove('backdropPage');
-                clearBackdrop();
+                backdrop.clearBackdrop();
             }
         } else {
-            clearBackdrop();
+            backdrop.clearBackdrop();
         }
     }
 });

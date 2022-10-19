@@ -14,7 +14,7 @@ import '../../elements/emby-scroller/emby-scroller';
 import '../../elements/emby-itemscontainer/emby-itemscontainer';
 import '../../elements/emby-tabs/emby-tabs';
 import '../../elements/emby-button/emby-button';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 
 /* eslint-disable indent */
 
@@ -66,7 +66,7 @@ import Dashboard from '../../utils/dashboard';
             SortOrder: 'Descending',
             IncludeItemTypes: 'Movie',
             Filters: 'IsResumable',
-            Limit: screenWidth >= 1600 ? 5 : 3,
+            Limit: screenWidth >= 1920 ? 5 : screenWidth >= 1600 ? 5 : 3,
             Recursive: true,
             Fields: 'PrimaryImageAspectRatio,MediaSourceCount,BasicSyncInfo',
             CollapseBoxSetItems: false,
@@ -157,17 +157,10 @@ import Dashboard from '../../utils/dashboard';
 
     function loadSuggestions(page, userId) {
         const screenWidth = dom.getWindowSize().innerWidth;
-        let itemLimit = 5;
-        if (screenWidth >= 1600) {
-            itemLimit = 8;
-        } else if (screenWidth >= 1200) {
-            itemLimit = 6;
-        }
-
         const url = ApiClient.getUrl('Movies/Recommendations', {
             userId: userId,
             categoryLimit: 6,
-            ItemLimit: itemLimit,
+            ItemLimit: screenWidth >= 1920 ? 8 : screenWidth >= 1600 ? 8 : screenWidth >= 1200 ? 6 : 5,
             Fields: 'PrimaryImageAspectRatio,MediaSourceCount,BasicSyncInfo',
             ImageTypeLimit: 1,
             EnableImageTypes: 'Primary,Backdrop,Banner,Thumb'

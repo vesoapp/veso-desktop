@@ -1,13 +1,12 @@
 import ActivityLog from '../../components/activitylog';
 import globalize from '../../scripts/globalize';
-import { toBoolean } from '../../utils/string.ts';
 
 /* eslint-disable indent */
 
     export default function (view, params) {
         let activityLog;
 
-        if (toBoolean(params.useractivity, true)) {
+        if (params.useractivity !== 'false') {
             view.querySelector('.activityItems').setAttribute('data-useractivity', 'true');
             view.querySelector('.sectionTitle').innerHTML = globalize.translate('HeaderActivity');
         } else {

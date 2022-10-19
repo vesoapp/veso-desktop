@@ -1,6 +1,5 @@
-/**
- * NOTE: This file should not be modified.
- * It is a legacy library that should be replaced at some point.
+/* Cleaning this file properly is not neecessary, since it's an outdated library
+ * and will be replaced soon by a Vue component.
  */
 
 import browser from '../scripts/browser';
@@ -53,12 +52,7 @@ function disableOneEvent(event) {
  * @return {Number}
  */
 function within(number, min, max) {
-    if (number < min) {
-        return min;
-    } else if (number > max) {
-        return max;
-    }
-    return number;
+    return number < min ? min : number > max ? max : number;
 }
 
 // Other global values

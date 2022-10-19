@@ -5,11 +5,11 @@ import dom from '../../../scripts/dom';
 import globalize from '../../../scripts/globalize';
 import imageHelper from '../../../scripts/imagehelper';
 import { formatDistanceToNow } from 'date-fns';
-import { localeWithSuffix } from '../../../scripts/dfnshelper';
+import { getLocaleWithSuffix } from '../../../scripts/dfnshelper';
 import '../../../elements/emby-button/emby-button';
 import '../../../elements/emby-itemscontainer/emby-itemscontainer';
 import '../../../components/cardbuilder/card.scss';
-import Dashboard from '../../../utils/dashboard';
+import Dashboard from '../../../scripts/clientUtils';
 import confirm from '../../../components/confirm/confirm';
 
 /* eslint-disable indent */
@@ -91,6 +91,8 @@ import confirm from '../../../components/confirm/confirm';
     }
 
     function load(page, devices) {
+        const localeWithSuffix = getLocaleWithSuffix();
+
         let html = '';
         html += devices.map(function (device) {
             let deviceHtml = '';
@@ -98,7 +100,7 @@ import confirm from '../../../components/confirm/confirm';
             deviceHtml += '<div class="cardBox visualCardBox">';
             deviceHtml += '<div class="cardScalable">';
             deviceHtml += '<div class="cardPadder cardPadder-backdrop"></div>';
-            deviceHtml += `<a is="emby-linkbutton" href="${canEdit ? '#/device.html?id=' + device.Id : '#'}" class="cardContent cardImageContainer ${cardBuilder.getDefaultBackgroundClass()}">`;
+            deviceHtml += `<a is="emby-linkbutton" href="${canEdit ? '#!/device.html?id=' + device.Id : '#'}" class="cardContent cardImageContainer ${cardBuilder.getDefaultBackgroundClass()}">`;
             const iconUrl = imageHelper.getDeviceIcon(device);
 
             if (iconUrl) {

@@ -561,7 +561,18 @@ import { appRouter } from '../components/appRouter';
     });
 
     defineRoute({
-        path: '/',
+        path: '/dialog',
+        dummyRoute: true
+    });
+
+    defineRoute({
+        path: '',
+        isDefaultRoute: true,
+        autoFocus: false
+    });
+
+    defineRoute({
+        path: 'index.html',
         autoFocus: false,
         isDefaultRoute: true
     });

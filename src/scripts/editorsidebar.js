@@ -2,8 +2,7 @@ import escapeHtml from 'escape-html';
 import 'jquery';
 import globalize from './globalize';
 import 'material-design-icons-iconfont';
-import Dashboard from '../utils/dashboard';
-import { getParameterByName } from '../utils/url.ts';
+import Dashboard from './clientUtils';
 
 /* eslint-disable indent */
 
@@ -300,9 +299,9 @@ import { getParameterByName } from '../utils/url.ts';
         if (itemId) {
             return itemId;
         }
-        return getParameterByName('id');
+        const url = window.location.hash || window.location.href;
+        return getParameterByName('id', url);
     }
-
     let nodesToLoad = [];
     let selectedNodeId;
     $(document).on('itemsaved', '.metadataEditorPage', function (e, item) {

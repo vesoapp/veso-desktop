@@ -35,18 +35,14 @@ function init(page, item) {
     elem.getItemsHtml = getItemsHtmlFn(item.Id);
 }
 
-function render(page, item) {
-    if (!page.playlistInit) {
-        page.playlistInit = true;
-        init(page, item);
+window.PlaylistViewer = {
+    render: function (page, item) {
+        if (!page.playlistInit) {
+            page.playlistInit = true;
+            init(page, item);
+        }
+
+        page.querySelector('#childrenContent').classList.add('verticalSection-extrabottompadding');
+        page.querySelector('#childrenContent .itemsContainer').refreshItems();
     }
-
-    page.querySelector('#childrenContent').classList.add('verticalSection-extrabottompadding');
-    page.querySelector('#childrenContent .itemsContainer').refreshItems();
-}
-
-const PlaylistViewer = {
-    render
 };
-
-export default PlaylistViewer;

@@ -1,18 +1,19 @@
-import { AccessSchedule, DynamicDayOfWeek, UserDto } from '@thornbill/jellyfin-sdk/dist/generated-client';
+import type { AccessSchedule, UserDto } from '@thornbill/jellyfin-sdk/dist/generated-client';
+import { DynamicDayOfWeek } from '@thornbill/jellyfin-sdk/dist/generated-client/models/dynamic-day-of-week';
 import React, { FunctionComponent, useCallback, useEffect, useState, useRef } from 'react';
 import globalize from '../../scripts/globalize';
 import LibraryMenu from '../../scripts/libraryMenu';
+import { appRouter } from '../appRouter';
 import AccessScheduleList from '../dashboard/users/AccessScheduleList';
 import BlockedTagList from '../dashboard/users/BlockedTagList';
 import ButtonElement from '../dashboard/users/ButtonElement';
 import CheckBoxListItem from '../dashboard/users/CheckBoxListItem';
 import SectionTitleButtonElement from '../dashboard/users/SectionTitleButtonElement';
-import SectionTitleContainer from '../dashboard/users/SectionTitleContainer';
+import SectionTitleLinkElement from '../dashboard/users/SectionTitleLinkElement';
 import SelectMaxParentalRating from '../dashboard/users/SelectMaxParentalRating';
 import SectionTabs from '../dashboard/users/SectionTabs';
 import loading from '../loading/loading';
 import toast from '../toast/toast';
-import { getParameterByName } from '../../utils/url';
 
 type RatingsArr = {
     Name: string;
@@ -194,7 +195,7 @@ const UserParentalControl: FunctionComponent = () => {
 
     const loadData = useCallback(() => {
         loading.show();
-        const userId = getParameterByName('userId');
+        const userId = appRouter.param('userId');
         const promise1 = window.ApiClient.getUser(userId);
         const promise2 = window.ApiClient.getParentalRatings();
         Promise.all([promise1, promise2]).then(function (responses) {
@@ -290,7 +291,7 @@ const UserParentalControl: FunctionComponent = () => {
 
         const onSubmit = (e: Event) => {
             loading.show();
-            const userId = getParameterByName('userId');
+            const userId = appRouter.param('userId');
             window.ApiClient.getUser(userId).then(function (result) {
                 saveUser(result);
             });
@@ -319,10 +320,18 @@ const UserParentalControl: FunctionComponent = () => {
     return (
         <div ref={element}>
             <div className='content-primary'>
-                <SectionTitleContainer
-                    title={userName}
-                    titleLink='https://docs.jellyfin.org/general/server/users/'
-                />
+                <div className='verticalSection'>
+                    <div className='sectionTitleContainer flex align-items-center'>
+                        <h2 className='sectionTitle username'>
+                            {userName}
+                        </h2>
+                        <SectionTitleLinkElement
+                            className='raised button-alt headerHelpButton'
+                            title='Help'
+                            url='https://docs.jellyfin.org/general/server/users/'
+                        />
+                    </div>
+                </div>
                 <SectionTabs activeTab='userparentalcontrol'/>
                 <form className='userParentalControlForm'>
                     <div className='selectContainer'>

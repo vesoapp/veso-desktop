@@ -6,7 +6,6 @@ import { AlphaPicker } from '../../components/alphaPicker/alphaPicker';
 import listView from '../../components/listview/listview';
 import cardBuilder from '../../components/cardbuilder/cardBuilder';
 import globalize from '../../scripts/globalize';
-import { playbackManager } from '../../components/playback/playbackmanager';
 import '../../elements/emby-itemscontainer/emby-itemscontainer';
 
 /* eslint-disable indent */
@@ -28,15 +27,6 @@ import '../../elements/emby-itemscontainer/emby-itemscontainer';
             isLoading = true;
             loading.show();
             return ApiClient.getItems(ApiClient.getCurrentUserId(), query);
-        }
-
-        function shuffle() {
-            ApiClient.getItem(
-                ApiClient.getCurrentUserId(),
-                params.topParentId
-            ).then((item) => {
-                playbackManager.shuffle(item);
-            });
         }
 
         const afterRefresh = (result) => {
@@ -86,8 +76,6 @@ import '../../elements/emby-itemscontainer/emby-itemscontainer';
             for (const elem of tabContent.querySelectorAll('.btnPreviousPage')) {
                 elem.addEventListener('click', onPreviousPageClick);
             }
-
-            tabContent.querySelector('.btnShuffle').classList.toggle('hide', result.TotalRecordCount < 1);
 
             isLoading = false;
             loading.hide();
@@ -258,8 +246,6 @@ import '../../elements/emby-itemscontainer/emby-itemscontainer';
                 onViewStyleChange();
                 itemsContainer.refreshItems();
             });
-
-            tabContent.querySelector('.btnShuffle').addEventListener('click', shuffle);
         };
 
         let itemsContainer = tabContent.querySelector('.itemsContainer');

@@ -74,6 +74,7 @@ import template from './imageeditor.template.html';
             apiClient.getItemImageInfos(currentItem.Id).then(function (imageInfos) {
                 renderStandardImages(page, apiClient, item, imageInfos, providers);
                 renderBackdrops(page, apiClient, item, imageInfos, providers);
+                renderScreenshots(page, apiClient, item, imageInfos, providers);
                 loading.hide();
 
                 if (layoutManager.tv) {
@@ -90,6 +91,8 @@ import template from './imageeditor.template.html';
 
         if (type === 'Backdrop') {
             options.tag = item.BackdropImageTags[index];
+        } else if (type === 'Screenshot') {
+            options.tag = item.ScreenshotImageTags[index];
         } else if (type === 'Primary') {
             options.tag = item.PrimaryImageTag || item.ImageTags[type];
         } else {
@@ -158,7 +161,7 @@ import template from './imageeditor.template.html';
         if (enableFooterButtons) {
             html += '<div class="cardText cardTextCentered">';
 
-            if (image.ImageType === 'Backdrop') {
+            if (image.ImageType === 'Backdrop' || image.ImageType === 'Screenshot') {
                 if (index > 0) {
                     html += '<button type="button" is="paper-icon-button-light" class="btnMoveImage autoSize" data-imagetype="' + image.ImageType + '" data-index="' + image.ImageIndex + '" data-newindex="' + (image.ImageIndex - 1) + '" title="' + globalize.translate('MoveLeft') + '"><span class="material-icons chevron_left"></span></button>';
                 } else {
@@ -239,7 +242,7 @@ import template from './imageeditor.template.html';
 
     function renderStandardImages(page, apiClient, item, imageInfos, imageProviders) {
         const images = imageInfos.filter(function (i) {
-            return i.ImageType !== 'Backdrop' && i.ImageType !== 'Chapter';
+            return i.ImageType !== 'Screenshot' && i.ImageType !== 'Backdrop' && i.ImageType !== 'Chapter';
         });
 
         renderImages(page, item, apiClient, images, imageProviders, page.querySelector('#images'));
@@ -257,6 +260,21 @@ import template from './imageeditor.template.html';
             renderImages(page, item, apiClient, images, imageProviders, page.querySelector('#backdrops'));
         } else {
             page.querySelector('#backdropsContainer', page).classList.add('hide');
+        }
+    }
+
+    function renderScreenshots(page, apiClient, item, imageInfos, imageProviders) {
+        const images = imageInfos.filter(function (i) {
+            return i.ImageType === 'Screenshot';
+        }).sort(function (a, b) {
+            return a.ImageIndex - b.ImageIndex;
+        });
+
+        if (images.length) {
+            page.querySelector('#screenshotsContainer', page).classList.remove('hide');
+            renderImages(page, item, apiClient, images, imageProviders, page.querySelector('#screenshots'));
+        } else {
+            page.querySelector('#screenshotsContainer', page).classList.add('hide');
         }
     }
 
@@ -293,7 +311,7 @@ import template from './imageeditor.template.html';
                 id: 'delete'
             });
 
-            if (type === 'Backdrop') {
+            if (type === 'Backdrop' || type === 'Screenshot') {
                 if (index > 0) {
                     commands.push({
                         name: globalize.translate('MoveLeft'),

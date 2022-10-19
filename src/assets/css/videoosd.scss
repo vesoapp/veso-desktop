@@ -25,46 +25,6 @@
     pointer-events: none;
 }
 
-.centerButtons {
-    position: fixed;
-    left: 0;
-    right: 0;
-    -webkit-justify-content: center;
-    justify-content: center;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-align-self: center;
-    align-self: center;
-    top: 50%;
-    margin-top: -2em;
-    font-size: 130%;
-}
-
-.centerButtons button {
-    text-shadow: 1px 1px 4px rgb(0 0 0 / 20%);
-    -webkit-text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-    -moz-text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.centerButtons .material-icons:before {
-    font-size: 170%;
-}
-
-.centerButtons button {
-    text-shadow: 1px 1px 4px rgb(0 0 0 / 20%);
-    -webkit-text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-    -moz-text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.centerButtons .btnPause {
-    margin-left: 13%;
-    margin-right: 13%;
-}
-
-.rotateButtons{
-    transform: scaleX(-1);
-}
-
 .skinHeader-withBackground.osdHeader {
     transition: opacity 0.3s ease-out;
     position: relative;
@@ -228,6 +188,7 @@
     user-select: none;
     margin-bottom: 0.7em;
     padding-left: 0.5em;
+    font-family: "Noto Sans", "Noto Sans HK", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC", "Noto Sans TC", sans-serif;
 }
 
 .osdMainTextContainer {
@@ -350,9 +311,9 @@
     height: 96px;
     width: 96px;
 
-    color: rgba(0, 164, 220, 0);
-    background: rgba(0, 164, 220, 0);
-    box-shadow: 0 0 0 0 rgba(0, 164, 220, 0);
+    color: rgba(220, 0, 0, 0);
+    background: rgba(220, 0, 0, 0);
+    box-shadow: 0 0 0 0 rgba(220, 0, 0, 0);
     transform: scale(1);
 }
 
@@ -367,46 +328,46 @@
 @keyframes pulse {
     0% {
         transform: scale(0.95);
-        color: rgba(0, 164, 220, 0.7);
-        background: rgba(0, 164, 220, 0.3);
-        box-shadow: 0 0 0 0 rgba(0, 164, 220, 0.3);
+        color: rgba(220, 0, 0, 0.7);
+        background: rgba(220, 0, 0, 0.3);
+        box-shadow: 0 0 0 0 rgba(220, 0, 0, 0.3);
     }
 
     70% {
         transform: scale(1);
-        color: rgba(0, 164, 220, 0);
-        background: rgba(0, 164, 220, 0);
-        box-shadow: 0 0 0 60px rgba(0, 164, 220, 0);
+        color: rgba(220, 0, 0, 0);
+        background: rgba(220, 0, 0, 0);
+        box-shadow: 0 0 0 60px rgba(220, 0, 0, 0);
     }
 
     100% {
         transform: scale(0.95);
-        color: rgba(0, 164, 220, 0);
-        background: rgba(0, 164, 220, 0);
-        box-shadow: 0 0 0 0 rgba(0, 164, 220, 0);
+        color: rgba(220, 0, 0, 0);
+        background: rgba(220, 0, 0, 0);
+        box-shadow: 0 0 0 0 rgba(220, 0, 0, 0);
     }
 }
 
 @keyframes infinite-pulse {
     0% {
         transform: scale(0.95);
-        color: rgba(0, 164, 220, 0.7);
-        background: rgba(0, 164, 220, 0.3);
-        box-shadow: 0 0 0 0 rgba(0, 164, 220, 0.3);
+        color: rgba(220, 0, 0, 0.7);
+        background: rgba(220, 0, 0, 0.3);
+        box-shadow: 0 0 0 0 rgba(220, 0, 0, 0.3);
     }
 
     70% {
         transform: scale(1);
-        color: rgba(0, 164, 220, 0.6);
-        background: rgba(0, 164, 220, 0);
-        box-shadow: 0 0 0 60px rgba(0, 164, 220, 0);
+        color: rgba(220, 0, 0, 0.6);
+        background: rgba(220, 0, 0, 0);
+        box-shadow: 0 0 0 60px rgba(220, 0, 0, 0);
     }
 
     100% {
         transform: scale(0.95);
-        color: rgba(0, 164, 220, 0.7);
-        background: rgba(0, 164, 220, 0.3);
-        box-shadow: 0 0 0 0 rgba(0, 164, 220, 0);
+        color: rgba(220, 0, 0, 0.7);
+        background: rgba(220, 0, 0, 0.3);
+        box-shadow: 0 0 0 0 rgba(220, 0, 0, 0);
     }
 }
 
@@ -414,4 +375,40 @@
     100% {
         transform: rotate(-360deg);
     }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .skipIntro .paper-icon-button-light:hover:not(:disabled) {
+        color: black !important;
+        background-color: rgba(47, 93, 98, 0) !important;
+    }
+}
+
+.skipIntro {
+    padding: 0 1px;
+    position: absolute;
+    right: 10em;
+    bottom: 9em;
+    background-color: rgba(25, 25, 25, 0.66);
+    border: 1px solid;
+    border-radius: 0;
+    display: inline-block;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #f9f9f9;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+@media (max-width: 1080px) {
+    .skipIntro {
+        right: 10%;
+    }
+}
+
+.skipIntro:hover {
+    box-shadow: inset 400px 0 0 0 #f9f9f9;
+    -webkit-transition: ease-in 1s;
+    -moz-transition: ease-in 1s;
+    transition: ease-in 1s;
 }

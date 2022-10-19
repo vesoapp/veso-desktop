@@ -2,7 +2,7 @@
 
 import dom from '../scripts/dom';
 import { appRouter } from './appRouter';
-import Dashboard from '../utils/dashboard';
+import Dashboard from '../scripts/clientUtils';
 import ServerConnections from './ServerConnections';
 
     function onGroupedCardClick(e, card) {
@@ -23,8 +23,7 @@ import ServerConnections from './ServerConnections';
         if (!actionableParent || actionableParent.classList.contains('cardContent')) {
             apiClient.getJSON(apiClient.getUrl('Users/' + userId + '/Items/Latest', options)).then(function (items) {
                 if (items.length === 1) {
-                    appRouter.showItem(items[0]);
-                    return;
+                    return void appRouter.showItem(items[0]);
                 }
 
                 const url = 'details?id=' + itemId + '&serverId=' + serverId;

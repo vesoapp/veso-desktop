@@ -14,7 +14,7 @@ import '../../elements/emby-itemscontainer/emby-itemscontainer';
 import '../../elements/emby-tabs/emby-tabs';
 import '../../elements/emby-button/emby-button';
 import '../../assets/css/flexstyles.scss';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 
 /* eslint-disable indent */
 

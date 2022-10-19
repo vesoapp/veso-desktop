@@ -1,5 +1,6 @@
 import escapeHtml from 'escape-html';
 import cardBuilder from '../cardbuilder/cardBuilder';
+import dom from '../../scripts/dom';
 import layoutManager from '../layoutManager';
 import imageLoader from '../images/imageLoader';
 import globalize from '../../scripts/globalize';
@@ -10,7 +11,7 @@ import '../../elements/emby-itemscontainer/emby-itemscontainer';
 import '../../elements/emby-scroller/emby-scroller';
 import '../../elements/emby-button/emby-button';
 import './homesections.scss';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import ServerConnections from '../ServerConnections';
 
 /* eslint-disable indent */
@@ -400,8 +401,15 @@ import ServerConnections from '../ServerConnections';
     function getItemsToResumeFn(mediaType, serverId) {
         return function () {
             const apiClient = ServerConnections.getApiClient(serverId);
+            const screenWidth = dom.getWindowSize().innerWidth;
 
-            const limit = enableScrollX() ? 12 : 5;
+            let limit;
+            if (enableScrollX()) {
+                limit = 24;
+            } else {
+                limit = screenWidth >= 1920 ? 8 : (screenWidth >= 1600 ? 8 : (screenWidth >= 1200 ? 9 : 6));
+                limit = Math.min(limit, 10);
+            }
 
             const options = {
                 Limit: limit,

@@ -5,7 +5,7 @@ import globalize from '../../../../scripts/globalize';
 import * as cardBuilder from '../../../../components/cardbuilder/cardBuilder.js';
 import '../../../../components/cardbuilder/card.scss';
 import '../../../../elements/emby-button/emby-button';
-import Dashboard, { pageIdOn } from '../../../../utils/dashboard';
+import Dashboard, { pageIdOn } from '../../../../scripts/clientUtils';
 import confirm from '../../../../components/confirm/confirm';
 
 function deletePlugin(page, uniqueid, version, name) {
@@ -127,7 +127,7 @@ function populateList(page, plugins, pluginConfigurationPages) {
     } else {
         html += '<div class="centerMessage">';
         html += '<h1>' + globalize.translate('MessageNoPluginsInstalled') + '</h1>';
-        html += '<p><a is="emby-linkbutton" class="button-link" href="#/availableplugins.html">';
+        html += '<p><a is="emby-linkbutton" class="button-link" href="#!/availableplugins.html">';
         html += globalize.translate('MessageBrowsePluginCatalog');
         html += '</a></p>';
         html += '</div>';
@@ -212,13 +212,13 @@ function reloadList(page) {
 
 function getTabs() {
     return [{
-        href: '#/installedplugins.html',
+        href: '#!/installedplugins.html',
         name: globalize.translate('TabMyPlugins')
     }, {
-        href: '#/availableplugins.html',
+        href: '#!/availableplugins.html',
         name: globalize.translate('TabCatalog')
     }, {
-        href: '#/repositories.html',
+        href: '#!/repositories.html',
         name: globalize.translate('TabRepositories')
     }];
 }

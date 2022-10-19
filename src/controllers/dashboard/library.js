@@ -8,7 +8,7 @@ import dom from '../../scripts/dom';
 import imageHelper from '../../scripts/imagehelper';
 import '../../components/cardbuilder/card.scss';
 import '../../elements/emby-itemrefreshindicator/emby-itemrefreshindicator';
-import Dashboard, { pageClassOn, pageIdOn } from '../../utils/dashboard';
+import Dashboard, { pageClassOn, pageIdOn } from '../../scripts/clientUtils';
 import confirm from '../../components/confirm/confirm';
 import cardBuilder from '../../components/cardbuilder/cardBuilder';
 
@@ -237,7 +237,7 @@ import cardBuilder from '../../components/cardbuilder/cardBuilder';
             value: 'books',
             message: getLink('BookLibraryHelp', 'https://docs.jellyfin.org/general/server/media/books.html')
         }, {
-            name: globalize.translate('HomeVideosPhotos'),
+            name: globalize.translate('Photos'),
             value: 'homevideos'
         }, {
             name: globalize.translate('MusicVideos'),
@@ -360,16 +360,16 @@ import cardBuilder from '../../components/cardbuilder/cardBuilder';
 
     function getTabs() {
         return [{
-            href: '#/library.html',
+            href: '#!/library.html',
             name: globalize.translate('HeaderLibraries')
         }, {
-            href: '#/librarydisplay.html',
+            href: '#!/librarydisplay.html',
             name: globalize.translate('Display')
         }, {
-            href: '#/metadataimages.html',
+            href: '#!/metadataimages.html',
             name: globalize.translate('Metadata')
         }, {
-            href: '#/metadatanfo.html',
+            href: '#!/metadatanfo.html',
             name: globalize.translate('TabNfoSettings')
         }];
     }

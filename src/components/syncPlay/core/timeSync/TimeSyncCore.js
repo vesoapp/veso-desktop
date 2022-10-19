@@ -5,7 +5,7 @@
 
 import { Events } from 'jellyfin-apiclient';
 import appSettings from '../../../../scripts/settings/appSettings';
-import { toFloat } from '../../../../utils/string.ts';
+import { toFloat } from '../../../../scripts/stringUtils';
 import { getSetting } from '../Settings';
 import TimeSyncServer from './TimeSyncServer';
 

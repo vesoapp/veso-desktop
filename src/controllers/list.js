@@ -11,7 +11,7 @@ import AlphaPicker from '../components/alphaPicker/alphaPicker';
 import '../elements/emby-itemscontainer/emby-itemscontainer';
 import '../elements/emby-scroller/emby-scroller';
 import ServerConnections from '../components/ServerConnections';
-import LibraryMenu from '../scripts/libraryMenu';
+import { appRouter } from '../components/appRouter';
 
 /* eslint-disable indent */
 
@@ -635,7 +635,7 @@ class ItemsView {
         }
 
         function setTitle(item) {
-            LibraryMenu.setTitle(getTitle(item) || '');
+            appRouter.setTitle(getTitle(item) || '');
 
             if (item && item.CollectionType === 'playlists') {
                 hideOrShowAll(view.querySelectorAll('.btnNewItem'), false);
@@ -721,7 +721,7 @@ class ItemsView {
                 return globalize.translate('Videos');
             }
 
-            return;
+            return void 0;
         }
 
         function play() {
@@ -1173,7 +1173,7 @@ class ItemsView {
     }
 
     getVisibleViewSettings() {
-        const item = this.currentItem;
+        const item = (this.params, this.currentItem);
         const fields = ['showTitle'];
 
         if (!item || item.Type !== 'PhotoAlbum' && item.Type !== 'ChannelFolderItem') {

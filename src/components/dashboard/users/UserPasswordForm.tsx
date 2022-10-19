@@ -1,6 +1,6 @@
-import { UserDto } from '@thornbill/jellyfin-sdk/dist/generated-client';
+import type { UserDto } from '@thornbill/jellyfin-sdk/dist/generated-client';
 import React, { FunctionComponent, useCallback, useEffect, useRef } from 'react';
-import Dashboard from '../../../utils/dashboard';
+import Dashboard from '../../../scripts/clientUtils';
 import globalize from '../../../scripts/globalize';
 import LibraryMenu from '../../../scripts/libraryMenu';
 import confirm from '../../confirm/confirm';

@@ -1,8 +1,7 @@
 import escapeHtml from 'escape-html';
 import 'jquery';
 import '../../../../elements/emby-checkbox/emby-checkbox';
-import Dashboard from '../../../../utils/dashboard';
-import { getParameterByName } from '../../../../utils/url.ts';
+import Dashboard from '../../../../scripts/clientUtils';
 
 function fillItems(elem, items, cssClass, idPrefix, currentList, isEnabledList) {
     let html = '<div class="checkboxList paperList" style="padding: .5em 1em;">';

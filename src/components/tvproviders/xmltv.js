@@ -5,7 +5,7 @@ import '../../elements/emby-checkbox/emby-checkbox';
 import '../../elements/emby-input/emby-input';
 import '../listview/listview.scss';
 import '../../elements/emby-button/paper-icon-button-light';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import { Events } from 'jellyfin-apiclient';
 
 export default function (page, providerId, options) {

@@ -1,8 +1,8 @@
-import { clearBackdrop } from '../backdrop/backdrop';
+import backdrop from '../backdrop/backdrop';
 import * as mainTabsManager from '../maintabsmanager';
 import layoutManager from '../layoutManager';
 import '../../elements/emby-tabs/emby-tabs';
-import LibraryMenu from '../../scripts/libraryMenu';
+import { appRouter } from '../appRouter';
 
 function onViewDestroy() {
     const tabControllers = this.tabControllers;
@@ -87,7 +87,7 @@ class TabbedView {
 
     onResume() {
         this.setTitle();
-        clearBackdrop();
+        backdrop.clearBackdrop();
 
         const currentTabController = this.currentTabController;
 
@@ -105,9 +105,8 @@ class TabbedView {
             currentTabController.onPause();
         }
     }
-
     setTitle() {
-        LibraryMenu.setTitle('');
+        appRouter.setTitle('');
     }
 }
 

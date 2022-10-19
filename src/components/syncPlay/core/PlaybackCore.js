@@ -5,7 +5,7 @@
 import { Events } from 'jellyfin-apiclient';
 
 import browser from '../../../scripts/browser';
-import { toBoolean, toFloat } from '../../../utils/string.ts';
+import { toBoolean, toFloat } from '../../../scripts/stringUtils';
 import * as Helper from './Helper';
 import { getSetting } from './Settings';
 

@@ -7,7 +7,7 @@ import cardBuilder from '../../components/cardbuilder/cardBuilder';
 import * as userSettings from '../../scripts/settings/userSettings';
 import globalize from '../../scripts/globalize';
 import '../../elements/emby-itemscontainer/emby-itemscontainer';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 
 /* eslint-disable indent */
 

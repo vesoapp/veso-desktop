@@ -30,7 +30,6 @@ import globalize from '../../scripts/globalize';
 import ServerConnections from '../../components/ServerConnections';
 import profileBuilder from '../../scripts/browserDeviceProfile';
 import { getIncludeCorsCredentials } from '../../scripts/settings/webSettings';
-import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../components/backdrop/backdrop';
 
 /**
  * Returns resolved URL.
@@ -712,7 +711,7 @@ function tryRemoveElement(elem) {
             destroyHlsPlayer(this);
             destroyFlvPlayer(this);
 
-            setBackdropTransparency(TRANSPARENCY_LEVEL.None);
+            appRouter.setTransparency('none');
             document.body.classList.remove('hide-scroll');
 
             const videoElement = this.#mediaElement;
@@ -859,7 +858,7 @@ function tryRemoveElement(elem) {
                 if (this._currentPlayOptions.fullscreen) {
                     appRouter.showVideoOsd().then(this.onNavigatedToOsd);
                 } else {
-                    setBackdropTransparency(TRANSPARENCY_LEVEL.Backdrop);
+                    appRouter.setTransparency('backdrop');
                     this.#videoDialog.classList.remove('videoPlayerContainer-onTop');
 
                     this.onStartedAndNavigatedToOsd();
@@ -1376,6 +1375,9 @@ function tryRemoveElement(elem) {
                         // Can't autoplay in these browsers so we need to use the full controls, at least until playback starts
                         if (!appHost.supports('htmlvideoautoplay')) {
                             html += '<video class="' + cssClass + '" preload="metadata" autoplay="autoplay" controls="controls" webkit-playsinline playsinline>';
+                        } else if (browser.web0s) {
+                            // in webOS, setting preload auto allows resuming videos
+                            html += '<video class="' + cssClass + '" preload="auto" autoplay="autoplay" webkit-playsinline playsinline>';
                         } else {
                             // Chrome 35 won't play with preload none
                             html += '<video class="' + cssClass + '" preload="metadata" autoplay="autoplay" webkit-playsinline playsinline>';

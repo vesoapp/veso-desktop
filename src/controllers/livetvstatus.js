@@ -12,7 +12,7 @@ import '../elements/emby-itemscontainer/emby-itemscontainer';
 import '../components/cardbuilder/card.scss';
 import 'material-design-icons-iconfont';
 import '../elements/emby-button/emby-button';
-import Dashboard from '../utils/dashboard';
+import Dashboard from '../scripts/clientUtils';
 import confirm from '../components/confirm/confirm';
 
 const enableFocusTransform = !browser.slow && !browser.edge;
@@ -219,9 +219,9 @@ function getProviderName(providerId) {
 function getProviderConfigurationUrl(providerId) {
     switch (providerId = providerId.toLowerCase()) {
         case 'xmltv':
-            return '#/livetvguideprovider.html?type=xmltv';
+            return '#!/livetvguideprovider.html?type=xmltv';
         case 'schedulesdirect':
-            return '#/livetvguideprovider.html?type=schedulesdirect';
+            return '#!/livetvguideprovider.html?type=schedulesdirect';
     }
 }
 

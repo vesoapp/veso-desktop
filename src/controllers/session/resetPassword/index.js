@@ -1,5 +1,5 @@
 import globalize from '../../../scripts/globalize';
-import Dashboard from '../../../utils/dashboard';
+import Dashboard from '../../../scripts/clientUtils';
 
 /* eslint-disable indent */
 
@@ -9,14 +9,13 @@ import Dashboard from '../../../utils/dashboard';
             msg += '<br/>';
             msg += '<br/>';
             msg += result.UsersReset.join('<br/>');
-            Dashboard.alert({
+            return void Dashboard.alert({
                 message: msg,
                 title: globalize.translate('HeaderPasswordReset'),
                 callback: function () {
                     window.location.href = 'index.html';
                 }
             });
-            return;
         }
 
         Dashboard.alert({

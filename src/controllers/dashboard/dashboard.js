@@ -6,7 +6,7 @@ import serverNotifications from '../../scripts/serverNotifications';
 import dom from '../../scripts/dom';
 import globalize from '../../scripts/globalize';
 import { formatDistanceToNow } from 'date-fns';
-import { localeWithSuffix } from '../../scripts/dfnshelper';
+import { getLocaleWithSuffix } from '../../scripts/dfnshelper';
 import loading from '../../components/loading/loading';
 import playMethodHelper from '../../components/playback/playmethodhelper';
 import cardBuilder from '../../components/cardbuilder/cardBuilder';
@@ -19,7 +19,7 @@ import '../../elements/emby-button/emby-button';
 import '../../assets/css/flexstyles.scss';
 import '../../elements/emby-itemscontainer/emby-itemscontainer';
 import taskButton from '../../scripts/taskbutton';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import ServerConnections from '../../components/ServerConnections';
 import alert from '../../components/alert';
 import confirm from '../../components/confirm/confirm';
@@ -175,8 +175,7 @@ import confirm from '../../components/confirm/confirm';
 
             if (!result.Items.length) {
                 view.querySelector('.activeRecordingsSection').classList.add('hide');
-                itemsContainer.innerHTML = '';
-                return;
+                return void(itemsContainer.innerHTML = '');
             }
 
             view.querySelector('.activeRecordingsSection').classList.remove('hide');
@@ -477,7 +476,7 @@ import confirm from '../../components/confirm/confirm';
             // how dates are returned by the server when the session is active and show something like 'Active now', instead of past/future sentences
             if (!nowPlayingItem) {
                 return {
-                    html: globalize.translate('LastSeen', formatDistanceToNow(Date.parse(session.LastActivityDate), localeWithSuffix)),
+                    html: globalize.translate('LastSeen', formatDistanceToNow(Date.parse(session.LastActivityDate), getLocaleWithSuffix())),
                     image: imgUrl
                 };
             }

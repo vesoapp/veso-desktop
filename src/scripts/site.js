@@ -25,8 +25,8 @@ import './libraryMenu';
 import './routes';
 import '../components/themeMediaPlayer';
 import './autoBackdrops';
-import { pageClassOn, serverAddress } from '../utils/dashboard';
-import './screensavermanager';
+import { pageClassOn, serverAddress } from './clientUtils';
+import '../libraries/screensavermanager';
 import './serverNotifications';
 import '../components/playback/playerSelectionMenu';
 import '../legacy/domParserTextHtml';
@@ -39,10 +39,39 @@ import SyncPlayNoActivePlayer from '../components/syncPlay/ui/players/NoActivePl
 import SyncPlayHtmlVideoPlayer from '../components/syncPlay/ui/players/HtmlVideoPlayer';
 import SyncPlayHtmlAudioPlayer from '../components/syncPlay/ui/players/HtmlAudioPlayer';
 import { currentSettings } from './settings/userSettings';
-import taskButton from './taskbutton';
+import taskButton from '../scripts/taskbutton';
+
+// TODO: Move this elsewhere
+window.getWindowLocationSearch = function(win) {
+    let search = (win || window).location.search;
+
+    if (!search) {
+        const index = window.location.href.indexOf('?');
+
+        if (index != -1) {
+            search = window.location.href.substring(index);
+        }
+    }
+
+    return search || '';
+};
+
+// TODO: Move this elsewhere
+window.getParameterByName = function(name, url) {
+    name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+    const regexS = '[\\?&]' + name + '=([^&#]*)';
+    const regex = new RegExp(regexS, 'i');
+    const results = regex.exec(url || getWindowLocationSearch());
+
+    if (results == null) {
+        return '';
+    }
+
+    return decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
 
 function loadCoreDictionary() {
-    const languages = ['af', 'ar', 'be-by', 'bg-bg', 'bn_bd', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en-gb', 'en-us', 'eo', 'es', 'es-419', 'es-ar', 'es_do', 'es-mx', 'et', 'fa', 'fi', 'fil', 'fr', 'fr-ca', 'gl', 'gsw', 'he', 'hi-in', 'hr', 'hu', 'id', 'it', 'ja', 'kk', 'ko', 'lt-lt', 'lv', 'mr', 'ms', 'nb', 'nl', 'nn', 'pl', 'pr', 'pt', 'pt-br', 'pt-pt', 'ro', 'ru', 'sk', 'sl-si', 'sq', 'sv', 'ta', 'th', 'tr', 'uk', 'ur_pk', 'vi', 'zh-cn', 'zh-hk', 'zh-tw'];
+    const languages = ['af', 'ar', 'be-by', 'bg-bg', 'bn_bd', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en-gb', 'en-us', 'eo', 'es', 'es-419', 'es-ar', 'es_do', 'es-mx', 'et', 'eu', 'fa', 'fi', 'fil', 'fr', 'fr-ca', 'gl', 'gsw', 'he', 'hi-in', 'hr', 'hu', 'id', 'it', 'ja', 'kk', 'ko', 'lt-lt', 'lv', 'mr', 'ms', 'nb', 'nl', 'nn', 'pl', 'pr', 'pt', 'pt-br', 'pt-pt', 'ro', 'ru', 'sk', 'sl-si', 'sq', 'sv', 'ta', 'th', 'tr', 'uk', 'ur_pk', 'vi', 'zh-cn', 'zh-hk', 'zh-tw'];
     const translations = languages.map(function (language) {
         return {
             lang: language,
@@ -163,11 +192,10 @@ async function onAppReady() {
         import('../assets/css/ios.scss');
     }
 
-    Events.on(appHost, 'resume', () => {
-        ServerConnections.currentApiClient()?.ensureWebSocket();
+    appRouter.start({
+        click: false,
+        hashbang: true
     });
-
-    appRouter.start();
 
     if (!browser.tv && !browser.xboxOne && !browser.ps4) {
         import('../components/nowPlayingBar/nowPlayingBar');

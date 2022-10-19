@@ -23,12 +23,8 @@ import ServerConnections from '../../../components/ServerConnections';
 import shell from '../../../scripts/shell';
 import SubtitleSync from '../../../components/subtitlesync/subtitlesync';
 import { appRouter } from '../../../components/appRouter';
-import LibraryMenu from '../../../scripts/libraryMenu';
-import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components/backdrop/backdrop';
 
 /* eslint-disable indent */
-    const TICKS_PER_MINUTE = 600000000;
-    const TICKS_PER_SECOND = 10000000;
 
     function getOpenedDialog() {
         return document.querySelector('.dialogContainer .dialog.opened');
@@ -58,16 +54,14 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
                     recordingButtonManager = null;
                 }
 
-                view.querySelector('.btnRecord').classList.add('hide');
-                return;
+                return void view.querySelector('.btnRecord').classList.add('hide');
             }
 
             ServerConnections.getApiClient(item.ServerId).getCurrentUser().then(function (user) {
                 if (user.Policy.EnableLiveTvManagement) {
                     import('../../../components/recordingcreator/recordingbutton').then(({default: RecordingButton}) => {
                         if (recordingButtonManager) {
-                            recordingButtonManager.refreshItem(item);
-                            return;
+                            return void recordingButtonManager.refreshItem(item);
                         }
 
                         recordingButtonManager = new RecordingButton({
@@ -156,7 +150,7 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
             currentItem = item;
             if (!item) {
                 updateRecordingButton(null);
-                LibraryMenu.setTitle('');
+                appRouter.setTitle('');
                 nowPlayingVolumeSlider.disabled = true;
                 nowPlayingPositionSlider.disabled = true;
                 btnFastForward.disabled = true;
@@ -212,18 +206,7 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
                 itemName = parentName || '';
             }
 
-            // Display the item with its premiere date if it has one
-            let title = itemName;
-            if (item.PremiereDate) {
-                try {
-                    const year = datetime.parseISO8601Date(item.PremiereDate).getFullYear();
-                    title += ` (${year})`;
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            LibraryMenu.setTitle(title);
+            appRouter.setTitle(itemName);
 
             const documentTitle = parentName || (item ? item.Name : null);
 
@@ -474,7 +457,34 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
                 updatePlaylist();
                 enableStopOnBack(true);
                 updatePlaybackRate(player);
+                getIntroTimestamps(state.NowPlayingItem);
             }
+        }
+
+        function getIntroTimestamps(item) {
+            const apiClient = ServerConnections.getApiClient(item);
+            const address = apiClient.serverAddress();
+
+            const url = `${address}/Episode/${item.Id}/IntroTimestamps`;
+            const reqInit = {
+                headers: {
+                    'Authorization': `MediaBrowser Token=${apiClient.accessToken()}`
+                }
+            };
+
+            fetch(url, reqInit).then(r => {
+                if (!r.ok) {
+                    return;
+                }
+
+                return r.json();
+            }).then(intro => {
+                tvIntro = intro;
+            });
+        }
+
+        function skipIntro() {
+            playbackManager.seekMs(tvIntro.IntroEnd * 1000);
         }
 
         function onPlayPauseStateChanged() {
@@ -594,22 +604,33 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
                     const item = currentItem;
                     refreshProgramInfoIfNeeded(player, item);
                     showComingUpNextIfNeeded(player, item, currentTime, currentRuntimeTicks);
+
+                    // Check if an introduction sequence was detected for this item.
+                    if (!tvIntro?.Valid) {
+                        return;
+                    }
+
+                    const seconds = playbackManager.currentTime(player) / 1000;
+                    const skipIntro = document.querySelector('.skipIntro');
+
+                    // If the skip prompt should be shown, show it.
+                    if (seconds >= tvIntro.ShowSkipPromptAt && seconds < tvIntro.HideSkipPromptAt) {
+                        skipIntro.classList.remove('hide');
+                        return;
+                    }
+
+                    skipIntro.classList.add('hide');
                 }
             }
         }
 
         function showComingUpNextIfNeeded(player, currentItem, currentTimeTicks, runtimeTicks) {
             if (runtimeTicks && currentTimeTicks && !comingUpNextDisplayed && !currentVisibleMenu && currentItem.Type === 'Episode' && userSettings.enableNextVideoInfoOverlay()) {
-                let showAtSecondsLeft = 30;
-                if (runtimeTicks >= 50 * TICKS_PER_MINUTE) {
-                    showAtSecondsLeft = 40;
-                } else if (runtimeTicks >= 40 * TICKS_PER_MINUTE) {
-                    showAtSecondsLeft = 35;
-                }
-                const showAtTicks = runtimeTicks - showAtSecondsLeft * TICKS_PER_SECOND;
+                const showAtSecondsLeft = runtimeTicks >= 3e10 ? 40 : runtimeTicks >= 24e9 ? 35 : 30;
+                const showAtTicks = runtimeTicks - 1e3 * showAtSecondsLeft * 1e4;
                 const timeRemainingTicks = runtimeTicks - currentTimeTicks;
 
-                if (currentTimeTicks >= showAtTicks && runtimeTicks >= (10 * TICKS_PER_MINUTE) && timeRemainingTicks >= (20 * TICKS_PER_SECOND)) {
+                if (currentTimeTicks >= showAtTicks && runtimeTicks >= 6e9 && timeRemainingTicks >= 2e8) {
                     showComingUpNext(player);
                 }
             }
@@ -739,9 +760,7 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
                         const currentTimeMs = (playbackStartTimeTicks + (positionTicks || 0)) / 1e4;
                         const programRuntimeMs = programEndDateMs - programStartDateMs;
 
-                        nowPlayingPositionSlider.value = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, currentTimeMs);
-
-                        if (bufferedRanges.length) {
+                        if (nowPlayingPositionSlider.value = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, currentTimeMs), bufferedRanges.length) {
                             const rangeStart = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, (playbackStartTimeTicks + (bufferedRanges[0].start || 0)) / 1e4);
                             const rangeEnd = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, (playbackStartTimeTicks + (bufferedRanges[0].end || 0)) / 1e4);
                             nowPlayingPositionSlider.setBufferedRanges([{
@@ -1320,6 +1339,7 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
         let programEndDateMs = 0;
         let playbackStartTimeTicks = 0;
         let subtitleSyncOverlay;
+        let tvIntro;
         const nowPlayingVolumeSlider = view.querySelector('.osdVolumeSlider');
         const nowPlayingVolumeSliderContainer = view.querySelector('.osdVolumeSliderContainer');
         const nowPlayingPositionSlider = view.querySelector('.osdPositionSlider');
@@ -1343,7 +1363,7 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
 
         view.addEventListener('viewbeforeshow', function () {
             headerElement.classList.add('osdHeader');
-            setBackdropTransparency(TRANSPARENCY_LEVEL.Full);
+            appRouter.setTransparency('full');
         });
         view.addEventListener('viewshow', function () {
             try {
@@ -1469,9 +1489,13 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
         let lastPointerDown = 0;
         /* eslint-disable-next-line compat/compat */
         dom.addEventListener(view, window.PointerEvent ? 'pointerdown' : 'click', function (e) {
-            if (dom.parentWithClass(e.target, ['videoOsdBottom', 'upNextContainer'])) {
-                showOsd();
+            // If the user clicked the skip intro button, don't pause the video. Fixes ConfusedPolarBear/intro-skipper#44.
+            if (dom.parentWithClass(e.target, ['btnSkipIntro'])) {
                 return;
+            }
+
+            if (dom.parentWithClass(e.target, ['videoOsdBottom', 'upNextContainer'])) {
+                return void showOsd();
             }
 
             const pointerType = e.pointerType || (layoutManager.mobile ? 'touch' : 'mouse');
@@ -1574,6 +1598,25 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
             return '<h1 class="sliderBubbleText">' + datetime.getDisplayRunningTime(ticks) + '</h1>';
         };
 
+        nowPlayingPositionSlider.getMarkerInfo = function () {
+            const markers = [];
+
+            const item = currentItem;
+
+            // use markers based on chapters
+            if (item?.Chapters?.length) {
+                item.Chapters.forEach(currentChapter => {
+                    markers.push({
+                        className: 'chapterMarker',
+                        name: currentChapter.Name,
+                        progress: currentChapter.StartPositionTicks / item.RunTimeTicks
+                    });
+                });
+            }
+
+            return markers;
+        };
+
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {
             playbackManager.previousTrack(currentPlayer);
         });
@@ -1597,6 +1640,7 @@ import { setBackdropTransparency, TRANSPARENCY_LEVEL } from '../../../components
         });
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
         view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
+        view.querySelector('.btnSkipIntro').addEventListener('click', skipIntro);
 
         // Register to SyncPlay playback events and show big animated icon
         const showIcon = (action) => {

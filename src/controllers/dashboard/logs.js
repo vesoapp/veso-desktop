@@ -4,12 +4,13 @@ import globalize from '../../scripts/globalize';
 import '../../elements/emby-button/emby-button';
 import '../../components/listview/listview.scss';
 import '../../assets/css/flexstyles.scss';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import alert from '../../components/alert';
 
 /* eslint-disable indent */
 
-    function onSubmit() {
+    function onSubmit(event) {
+        event.preventDefault();
         loading.show();
         const form = this;
         ApiClient.getServerConfiguration().then(function (config) {

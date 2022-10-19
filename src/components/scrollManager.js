@@ -61,12 +61,7 @@ import layoutManager from './layoutManager';
      * @return {number} Clamped value.
      */
     function clamp(value, min, max) {
-        if (value <= min) {
-            return min;
-        } else if (value >= max) {
-            return max;
-        }
-        return value;
+        return value <= min ? min : value >= max ? max : value;
     }
 
     /**

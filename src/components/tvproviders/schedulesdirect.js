@@ -8,7 +8,7 @@ import '../../elements/emby-button/paper-icon-button-light';
 import '../../elements/emby-select/emby-select';
 import '../../elements/emby-button/emby-button';
 import '../../assets/css/flexstyles.scss';
-import Dashboard from '../../utils/dashboard';
+import Dashboard from '../../scripts/clientUtils';
 import { Events } from 'jellyfin-apiclient';
 
 export default function (page, providerId, options) {
@@ -122,10 +122,9 @@ export default function (page, providerId, options) {
         const selectedListingsId = $('#selectListing', page).val();
 
         if (!selectedListingsId) {
-            Dashboard.alert({
+            return void Dashboard.alert({
                 message: globalize.translate('ErrorPleaseSelectLineup')
             });
-            return;
         }
 
         loading.show();
@@ -169,8 +168,7 @@ export default function (page, providerId, options) {
 
     function refreshListings(value) {
         if (!value) {
-            $('#selectListing', page).html('');
-            return;
+            return void $('#selectListing', page).html('');
         }
 
         loading.show();

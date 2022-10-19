@@ -29,17 +29,15 @@ class HomeTab {
         const apiClient = this.apiClient;
         this.destroyHomeSections();
         this.sectionsRendered = true;
-        return apiClient.getCurrentUser()
-            .then(user => homeSections.loadSections(view.querySelector('.sections'), apiClient, user, userSettings))
-            .then(() => {
+        return apiClient.getCurrentUser().then(function (user) {
+            return homeSections.loadSections(view.querySelector('.sections'), apiClient, user, userSettings).then(function () {
                 if (options.autoFocus) {
                     focusManager.autoFocus(view);
                 }
-            }).catch(err => {
-                console.error(err);
-            }).finally(() => {
+
                 loading.hide();
             });
+        });
     }
     onPause() {
         const sectionsContainer = this.sectionsContainer;
