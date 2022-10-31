@@ -34,6 +34,27 @@ import { Events } from 'jellyfin-apiclient';
         return false;
     }
 
+    export function enableShakaPlayer() {
+        /* eslint-disable-next-line compat/compat */
+        if (!!window.MediaSource && !!window.MediaSource.isTypeSupported) {
+            // safari support native hls.
+            if (browser.iOS || browser.osx) {
+                return false;
+            }
+
+            // The native players on these devices support seeking live streams, no need to use shaka here
+            if (browser.tizen || browser.web0s) {
+                return false;
+            }
+
+            if (!browser.mobile && (browser.edgeChromium || browser.firefox) || browser.chrome) {
+                return true;
+            }
+        }
+
+        return false;
+     }
+
     export function enableHlsJsPlayer(runTimeTicks, mediaType) {
         if (window.MediaSource == null) {
             return false;
@@ -232,6 +253,23 @@ import { Events } from 'jellyfin-apiclient';
         }
     }
 
+    export function destroyShakaPlayer(instance) {
+        const player = instance._shakaPlayer;
+        if (player) {
+            try {
+                return player.destroy().then(() => {
+                    instance._shakaPlayer = null;
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        return new Promise((resolve) => {
+            resolve();
+        });
+    }
+
     export function destroyHlsPlayer(instance) {
         const player = instance._hlsPlayer;
         if (player) {
@@ -350,6 +388,7 @@ import { Events } from 'jellyfin-apiclient';
 
         resetSrc(elem);
 
+        destroyShakaPlayer(instance);
         destroyHlsPlayer(instance);
         destroyFlvPlayer(instance);
         destroyCastPlayer(instance);

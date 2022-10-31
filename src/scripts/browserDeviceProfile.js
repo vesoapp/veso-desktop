@@ -417,8 +417,15 @@ import browser from './browser';
         // Do not use AC3 for audio transcoding unless AAC and MP3 are not supported.
         if (canPlayAc3VideoAudio) {
             videoAudioCodecs.push('ac3');
+            if (browser.edgeChromium) {
+                hlsInFmp4VideoAudioCodecs.push('ac3');
+            }
+
             if (canPlayEac3VideoAudio) {
                 videoAudioCodecs.push('eac3');
+                if (browser.edgeChromium) {
+                    hlsInFmp4VideoAudioCodecs.push('eac3');
+                }
             }
 
             if (canPlayAc3VideoAudioInHls) {
@@ -470,6 +477,9 @@ import browser from './browser';
             if (browser.tizen) {
                 hlsInTsVideoAudioCodecs.push('opus');
             }
+            if (!browser.safari) {
+                hlsInFmp4VideoAudioCodecs.push('opus');
+            }
         }
 
         if (canPlayAudioFormat('flac')) {
@@ -479,7 +489,9 @@ import browser from './browser';
 
         if (canPlayAudioFormat('alac')) {
             videoAudioCodecs.push('alac');
-            hlsInFmp4VideoAudioCodecs.push('alac');
+            if (browser.safari || browser.tizen || browser.web0s) {
+                hlsInFmp4VideoAudioCodecs.push('alac');
+            }
         }
 
         videoAudioCodecs = videoAudioCodecs.filter(function (c) {
@@ -499,17 +511,21 @@ import browser from './browser';
         const hlsInTsVideoCodecs = [];
         const hlsInFmp4VideoCodecs = [];
 
-        if ((browser.safari || browser.tizen || browser.web0s) && canPlayHevc(videoTestElement, options)) {
-            hlsInFmp4VideoCodecs.push('hevc');
+        if (canPlayHevc(videoTestElement, options)) {
+            // Chromium used to support HEVC on Android but not via MSE
+            if (browser.chrome && (!browser.android || browser.chrome.versionMajor >= 105)) {
+                hlsInFmp4VideoCodecs.push('hevc');
+            }
+
+            if (browser.edgeChromium || browser.safari || browser.tizen || browser.web0s) {
+                hlsInFmp4VideoCodecs.push('hevc');
+            }
         }
 
         if (canPlayH264(videoTestElement)) {
             mp4VideoCodecs.push('h264');
             hlsInTsVideoCodecs.push('h264');
-
-            if (browser.safari || browser.tizen || browser.web0s) {
-                hlsInFmp4VideoCodecs.push('h264');
-            }
+            hlsInFmp4VideoCodecs.push('h264');
         }
 
         if (canPlayHevc(videoTestElement, options)) {
@@ -690,7 +706,10 @@ import browser from './browser';
         }
 
         if (canPlayHls() && options.enableHls !== false) {
-            if (hlsInFmp4VideoCodecs.length && hlsInFmp4VideoAudioCodecs.length && userSettings.preferFmp4HlsContainer() && (browser.safari || browser.tizen || browser.web0s)) {
+            const nativeFmp4 = (browser.iOS && browser.iOSVersion >= 11) || browser.osx || browser.tizen || browser.web0s;
+            const shakaFmp4 = !browser.mobile && (browser.edgeChromium || browser.firefox) || browser.chrome;
+            const enableFmp4Hls = userSettings.preferFmp4HlsContainer() && (nativeFmp4 || shakaFmp4);
+            if (hlsInFmp4VideoCodecs.length && hlsInFmp4VideoAudioCodecs.length && enableFmp4Hls) {
                 profile.TranscodingProfiles.push({
                     Container: 'mp4',
                     Type: 'Video',
@@ -862,7 +881,13 @@ import browser from './browser';
             av1VideoRangeTypes += '|HDR10|HLG';
         }
 
-        if (browser.edgeChromium || browser.chrome || browser.firefox) {
+        if (browser.chrome && !browser.mobile) {
+            hevcVideoRangeTypes += '|HDR10|HLG';
+            vp9VideoRangeTypes += '|HDR10|HLG';
+            av1VideoRangeTypes += '|HDR10|HLG';
+        }
+
+        if (browser.edgeChromium || browser.firefox) {
             vp9VideoRangeTypes += '|HDR10|HLG';
             av1VideoRangeTypes += '|HDR10|HLG';
         }
