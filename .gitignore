@@ -2,6 +2,7 @@
 dist
 web
 node_modules
+release-builds
 
 # config
 config.json
@@ -18,4 +19,6 @@ yarn-error.log
 # build artifacts
 fedora/jellyfin-web-*.src.rpm
 fedora/jellyfin-web-*.tar.gz
+
+# mac
 .DS_Store
