@@ -1,8 +1,8 @@
 {
-  "name": "jellyfin-web",
-  "version": "10.9.0",
-  "description": "Web interface for Veso",
-  "repository": "https://github.com/jellyfin/jellyfin-web",
+  "name": "Veso",
+  "version": "1.0.2",
+  "description": "Veso",
+  "repository": "https://github.com/vesoapp/veso-desktop",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@babel/core": "7.19.3",
@@ -30,6 +30,9 @@
     "cross-env": "7.0.3",
     "css-loader": "6.7.1",
     "cssnano": "5.1.13",
+    "electron": "21.2.2",
+    "electron-builder": "23.6.0",
+    "electron-packager": "17.1.1",
     "es-check": "7.0.1",
     "eslint": "8.26.0",
     "eslint-plugin-compat": "4.0.2",
@@ -64,9 +67,7 @@
     "webpack-dev-server": "4.11.1",
     "webpack-merge": "5.8.0",
     "workbox-webpack-plugin": "6.5.4",
-    "worker-loader": "3.0.8"
-  },
-  "dependencies": {
+    "worker-loader": "3.0.8",
     "@dannymichel/proxima-nova": "4.5.2",
     "@fontsource/noto-sans": "4.5.11",
     "@fontsource/noto-sans-hk": "4.5.12",
@@ -108,10 +109,14 @@
     "shaka-player": "4.2.2",
     "sortablejs": "1.15.0",
     "swiper": "8.4.4",
+    "v8-compile-cache": "2.3.0",
     "webcomponents.js": "0.7.24",
     "whatwg-fetch": "3.6.2",
     "workbox-core": "6.5.4",
     "workbox-precaching": "6.5.4"
+  },
+  "dependencies": {
+    "v8-compile-cache": "2.3.0"
   },
   "browserslist": [
     "last 2 Firefox versions",
@@ -130,16 +135,19 @@
     "Firefox ESR"
   ],
   "scripts": {
-    "start": "npm run serve",
+    "start": "electron .",
     "serve": "webpack serve --config webpack.dev.js",
     "prepare": "node ./scripts/prepare.js",
     "build:development": "webpack --config webpack.dev.js",
-    "build:production": "cross-env NODE_ENV=\"production\" webpack --config webpack.prod.js",
+    "build:production": "webpack --config webpack.prod.js",
     "escheck": "es-check",
     "lint": "eslint \"./\"",
     "stylelint": "npm run stylelint:css && npm run stylelint:scss",
     "stylelint:css": "stylelint \"src/**/*.css\"",
-    "stylelint:scss": "stylelint --config=\".stylelintrc.scss.json\" \"src/**/*.scss\""
+    "stylelint:scss": "stylelint --config=\".stylelintrc.scss.json\" \"src/**/*.scss\"",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=src/assets/icons/veso-icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . Veso --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/icons/veso-icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Veso\"",
+    "package-linux": "electron-packager . Veso --overwrite --asar=true --platform=linux --arch=x64 --icon=src/assets/icons/veso-icon.png --prune=true --out=release-builds"
   },
   "engines": {
     "node": ">=16.13.1",
