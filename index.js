@@ -6,9 +6,9 @@ app.on('ready', () => {
         frame: false,
         width: 1280,
         height: 720,
-        title: 'Veso'
+        title: 'The Lounge'
     });
-    win.loadURL(`file://${__dirname}/dist/index.html`);
+    win.loadURL(`https://lg.ianon.app`);
 });
 
 app.on('window-all-closed', () => {

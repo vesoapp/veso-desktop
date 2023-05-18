@@ -1,8 +1,8 @@
 {
-  "name": "Veso",
-  "version": "1.0.2",
-  "description": "Veso",
-  "repository": "https://github.com/vesoapp/veso-desktop",
+  "name": "The Lounge",
+  "version": "1.0.0",
+  "description": "The Lounge",
+  "repository": "https://github.com/ianonapp/thelounge-desktop",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@babel/core": "7.19.3",
@@ -144,9 +144,9 @@
     "stylelint": "npm run stylelint:css && npm run stylelint:scss",
     "stylelint:css": "stylelint \"src/**/*.css\"",
     "stylelint:scss": "stylelint --config=\".stylelintrc.scss.json\" \"src/**/*.scss\"",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=src/assets/icons/veso-icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . Veso --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/icons/veso-icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Veso\"",
-    "package-linux": "electron-packager . Veso --overwrite --asar=true --platform=linux --arch=x64 --icon=src/assets/icons/veso-icon.png --prune=true --out=release-builds"
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=src/assets/icons/thelounge-icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . The Lounge --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/icons/thelounge-icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"The Lounge\"",
+    "package-linux": "electron-packager . The Lounge --overwrite --asar=true --platform=linux --arch=x64 --icon=src/assets/icons/thelounge-icon.png --prune=true --out=release-builds"
   },
   "engines": {
     "node": ">=16.13.1",
