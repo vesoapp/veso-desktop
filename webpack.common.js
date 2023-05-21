@@ -8,12 +8,6 @@ const { DefinePlugin } = require('webpack');
 const Assets = [
     'native-promise-only/npo.js',
     'libarchive.js/dist/worker-bundle.js',
-    '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.js',
-    '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.data',
-    '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.wasm',
-    '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker-legacy.js',
-    '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker-legacy.data',
-    '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem',
     'pdfjs-dist/build/pdf.worker.js'
 ];
 
@@ -105,7 +99,6 @@ const config = {
                         // get the name. E.g. node_modules/packageName/not/this/part.js
                         // or node_modules/packageName
                         const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                        // if "packageName" is a namespace (i.e. @jellyfin) get the namespace + packageName
                         if (packageName.startsWith('@')) {
                             const parts = module.context
                                 .substring(module.context.lastIndexOf(packageName))

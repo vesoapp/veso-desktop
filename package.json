@@ -21,8 +21,6 @@
     "@fontsource/noto-sans-kr": "4.5.12",
     "@fontsource/noto-sans-sc": "4.5.12",
     "@fontsource/noto-sans-tc": "4.5.12",
-    "@jellyfin/libass-wasm": "4.1.1",
-    "@jellyfin/sdk": "0.7.0",
     "@types/escape-html": "1.0.2",
     "@types/lodash-es": "4.17.6",
     "@types/react": "17.0.51",
@@ -69,7 +67,6 @@
     "html-loader": "4.2.0",
     "html-webpack-plugin": "5.5.0",
     "intersection-observer": "0.12.2",
-    "jellyfin-apiclient": "1.10.0",
     "jquery": "3.6.1",
     "jstree": "3.3.12",
     "keyv": "4.5.0",
@@ -115,6 +112,8 @@
     "worker-loader": "3.0.8"
   },
   "dependencies": {
+    "electrolytic": "0.1.1",
+    "node-notifier": "10.0.1",
     "v8-compile-cache": "2.3.0"
   },
   "browserslist": [
@@ -136,14 +135,8 @@
   "scripts": {
     "start": "electron .",
     "serve": "webpack serve --config webpack.dev.js",
-    "prepare": "node ./scripts/prepare.js",
     "build:development": "webpack --config webpack.dev.js",
     "build:production": "cross-env NODE_ENV=\"production\" webpack --config webpack.prod.js",
-    "escheck": "es-check",
-    "lint": "eslint \"./\"",
-    "stylelint": "npm run stylelint:css && npm run stylelint:scss",
-    "stylelint:css": "stylelint \"src/**/*.css\"",
-    "stylelint:scss": "stylelint --config=\".stylelintrc.scss.json\" \"src/**/*.scss\"",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=src/assets/icons/thelounge-icon.icns --prune=true --out=release-builds",
     "package-win": "electron-packager . The Lounge --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/icons/thelounge-icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"The Lounge\"",
     "package-linux": "electron-packager . The Lounge --overwrite --asar=true --platform=linux --arch=x64 --icon=src/assets/icons/thelounge-icon.png --prune=true --out=release-builds"
