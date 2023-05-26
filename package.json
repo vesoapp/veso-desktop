@@ -23,6 +23,9 @@
     "lint:prettier": "prettier --list-different \"**/*.*\"",
     "lint:stylelint": "stylelint --color \"client/**/*.css\"",
     "lint": "run-p --aggregate-output --continue-on-error lint:*",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=src/assets/icons/thelounge-icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . The Lounge --overwrite --asar=true --platform=win32 --arch=ia32 --icon=src/assets/icons/thelounge-icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"The Lounge\"",
+    "package-linux": "electron-packager . The Lounge --overwrite --asar=true --platform=linux --arch=x64 --icon=src/assets/icons/thelounge-icon.png --prune=true --out=release-builds",
     "start": "node index start",
     "test": "run-p --aggregate-output --continue-on-error lint:* test:*",
     "test:mocha": "cross-env NODE_ENV=test webpack --mode=development && cross-env NODE_ENV=test TS_NODE_PROJECT='./test/tsconfig.json' nyc --nycrc-path=test/.nycrc-mocha.json mocha --require ts-node/register --colors --config=test/.mocharc.yml",
@@ -78,7 +81,8 @@
     "ua-parser-js": "1.0.33",
     "uuid": "8.3.2",
     "web-push": "3.4.5",
-    "yarn": "1.22.17"
+    "yarn": "1.22.17",
+    "v8-compile-cache": "2.3.0"
   },
   "optionalDependencies": {
     "sqlite3": "5.1.6"
@@ -127,6 +131,9 @@
     "css-loader": "6.5.1",
     "cssnano": "5.0.17",
     "dayjs": "1.10.8",
+    "electron": "21.2.2",
+    "electron-builder": "23.6.0",
+    "electron-packager": "17.1.1",
     "emoji-regex": "9.2.2",
     "eslint": "8.16.0",
     "eslint-config-prettier": "8.3.0",
