@@ -80,7 +80,7 @@
     "mini-css-extract-plugin": "2.6.1",
     "native-promise-only": "0.8.1",
     "pdfjs-dist": "2.16.105",
-    "postcss": "8.4.18",
+    "postcss": "8.4.31",
     "postcss-loader": "7.0.1",
     "postcss-preset-env": "7.8.2",
     "postcss-scss": "4.0.5",
