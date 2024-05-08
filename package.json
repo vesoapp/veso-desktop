@@ -79,7 +79,7 @@
     "material-design-icons-iconfont": "6.7.0",
     "mini-css-extract-plugin": "2.6.1",
     "native-promise-only": "0.8.1",
-    "pdfjs-dist": "2.16.105",
+    "pdfjs-dist": "4.2.67",
     "postcss": "8.4.18",
     "postcss-loader": "7.0.1",
     "postcss-preset-env": "7.8.2",
